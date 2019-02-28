@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var user = require('../models/user');
+var comment = require('../models/comment');
 var crypto = require('crypto');
 // var movie = require('../models/movie');
 // var comment = require('../models/comment');
@@ -65,8 +66,33 @@ router.post('/register',function(req,res,next){
         }
    });
 });
-//用户注册评论
-router.post('/postComment',function(req,res,next){
+//用户提交评论
+router.post('/postComment', function (req, res, next) {
+  if (!req.body.username) {
+    var username = '匿名用户';
+  }
+  if (!req.body.movie_id) {
+    res.json({ status: 0, message: '电影id为空' });
+  }
+  if (!req.body.context) {
+    res.json({ status: 0, message: '评论内容为空' });
+  }
+  //根据数据集创建一个新的数据内容
+  var saveComment = new comment({
+    movie_id: req.body.movie_id,
+    username: req.body.username,
+    context: req.body.context,
+    check: 0
+  });
+  //保存合适的数据集
+  saveComment.save(function (err) {
+    if (err) {
+      res.json({ status: 0, message: err });
+    } else {
+      res.json({ status: 1, message: '评论成功' });
+    }
+
+  });
 });
 //用户点赞
 router.post('/support',function(req,res,next){
@@ -143,6 +169,7 @@ router.post('/sendEmail',function(req,res,next){
 //用户显示站内信,其中的receive参数为1时是发送的内容,为2时是收到的内容
 router.post('/showEmail',function(req,res,next){
 });
+
 //获取MD5的值
 function getMD5Password(id){
    var md5 = crypto.createHash('md5');
