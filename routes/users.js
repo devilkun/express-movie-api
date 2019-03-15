@@ -17,12 +17,40 @@ router.post('/login',function(req,res,next){
     }
     user.findUserLogin(req.body.username,req.body.password,function(err,userSave){
       if(userSave.length != 0){
-         var token_after = getMD5Password(userSave[0]._id)
-         res.json({status:1,data:{token:token_after,user:userSave},message:'用户登录成功'});
-      }else{
-         res.json({status:0,message:'用户名或密码错误'})
-      }
+        // var token_after = getMD5Password(userSave[0]._id)
+        var token_after = 'admin'
+        res.json({
+          status: 1,
+          roles: ["admin"],
+          token: token_after,
+          introduction: "我是超级管理员",
+          avatar: "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif",
+          name: "Super Admin",
+          message: "用户登录成功" });
+        }else{
+          res.json({status:0,message:'用户名或密码错误'})
+        }
     });
+});
+//获取用户信息
+router.get('/userinfo', function (req, res, next) {
+  if (!req.query.token) {
+    res.json({ status: 0, message: 'error' });
+  }else{
+    res.json({
+      status: 1,
+      roles: ["admin"],
+      token: req.query.token,
+      introduction: "我是超级管理员",
+      avatar:
+        "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif",
+      name: "Super Admin"
+    });
+  }
+});
+//登出
+router.post('/logout', function (req, res, next) {
+  res.json({ status: 1, message: '已成功登出' });
 });
 //用户注册接口
 router.post('/register',function(req,res,next){

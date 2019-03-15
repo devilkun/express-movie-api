@@ -20,7 +20,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/v1', usersRouter);
 // app.use('/admin',adminRouter);
 
 // catch 404 and forward to error handler
