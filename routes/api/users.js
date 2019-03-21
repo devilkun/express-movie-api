@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
-var user = require('../models/user');
-var comment = require('../models/comment');
-var movie = require('../models/movie');
+var user = require('../../models/user');
+var comment = require('../../models/comment');
+var movie = require('../../models/movie');
 var crypto = require('crypto');
 
 const init_token = 'TKL02o';
