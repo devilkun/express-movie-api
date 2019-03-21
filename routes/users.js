@@ -50,7 +50,13 @@ router.get('/userinfo', function (req, res, next) {
 });
 //登出
 router.post('/logout', function (req, res, next) {
-  res.json({ status: 1, message: '已成功登出' });
+
+  if (!req.query.token) {
+    res.json({ status: 0, message: 'token错误' });
+  }else{
+    res.json({ status: 1, message: '已成功登出' });
+  }
+  
 });
 //用户注册接口
 router.post('/register',function(req,res,next){
@@ -71,6 +77,9 @@ router.post('/register',function(req,res,next){
     if(!req.body.userPhone){
       res.json({status:0,message:'用户手机为空'}); 
     }
+    if (!req.body.userRole) {
+      res.json({ status: 0, message: '用户角色为空' });
+    }
     if(!regex_phone.test(req.body.userPhone)) {
       res.json({ status: 0, message: '用户手机格式错误' })
     } 
@@ -84,6 +93,7 @@ router.post('/register',function(req,res,next){
                 password:req.body.password,
                 userMail:req.body.userMail,
                 userPhone:req.body.userPhone,
+                userRole: req.body.userRole,
                 userAdmin:0,
                 userPower:0,
                 userStop:0

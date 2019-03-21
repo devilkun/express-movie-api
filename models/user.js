@@ -7,6 +7,7 @@ var user = new mongoose.Schema({
     userPhone : String,
     userAdmin : Boolean,
     userPower : Number,
+    userRole: Number,
     userStop : Boolean
 });
 //用户的查找方法
